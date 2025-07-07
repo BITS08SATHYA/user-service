@@ -6,8 +6,7 @@ import com.ecommerce.user.dto.UserResponse;
 import com.ecommerce.user.model.Address;
 import com.ecommerce.user.model.User;
 import com.ecommerce.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.Modifying;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,8 +49,8 @@ public class UserService {
         return response;
     }
 
-    @Modifying
-    @Transactional
+//    @Modifying
+//    @Transactional
     public void addUser(UserRequest userRequest) {
 //        user.setId(nextId++);
 //        usersList.add(user);
@@ -80,17 +79,17 @@ public class UserService {
 
     }
 
-    public Optional<UserResponse> fetchAUsers(Long id) {
+    public Optional<UserResponse> fetchAUsers(String id) {
 //       return usersList.stream()
 //               .filter(user -> user.getId().equals(id))
 //               .findFirst();
-       return userRepository.findById(id)
+       return userRepository.findById(String.valueOf(id))
                .map(this::mapToUserResponse);
     }
 
-    @Modifying
-    @Transactional
-    public boolean updateUser(Long id, UserRequest UpdatedUserRequest){
+//    @Modifying
+//    @Transactional
+    public boolean updateUser(String id, UserRequest UpdatedUserRequest){
 //        return usersList.stream()
 //                .filter(user -> user.getId().equals(id))
 //                .findFirst()
@@ -100,7 +99,7 @@ public class UserService {
 //                    return true;
 //                }).orElse(false);
 
-        return userRepository.findById(id)
+        return userRepository.findById(String.valueOf(id))
                 .map(existingUser -> {
                     updateUserFromRequest(existingUser, UpdatedUserRequest);
                     userRepository.save(existingUser);
