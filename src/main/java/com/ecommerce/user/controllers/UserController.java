@@ -4,6 +4,9 @@ import com.ecommerce.user.dto.UserRequest;
 import com.ecommerce.user.dto.UserResponse;
 import com.ecommerce.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +16,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
+@Slf4j
 public class UserController {
 
     private final UserService userService;
     private Object user;
+//    private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAllUsers() {
@@ -26,6 +31,10 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getAUser(@PathVariable String id) {
+
+        log.info("Request received for user: {}", id);
+
+        log.trace("his is Trace level -- Very detailed logs");
 
         return userService.fetchAUsers(id)
                 .map(ResponseEntity::ok)
