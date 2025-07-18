@@ -5,7 +5,3 @@ spring:
     import: optional:configserver:http://localhost:8888
 
 
-logging:
-  level:
-    root: TRACE
-    com.ecommerce.user: INFO
