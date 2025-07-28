@@ -7,6 +7,7 @@ import com.ecommerce.user.model.Address;
 import com.ecommerce.user.model.User;
 import com.ecommerce.user.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,13 +15,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final KeyCloakAdminService keyCloakAdminService;
+
+//    public UserService(UserRepository userRepository, KeyCloakAdminService keyCloakAdminService) {
+//        this.userRepository = userRepository;
+//        this.keyCloakAdminService = keyCloakAdminService;
+//    }
 
     public List<UserResponse> fetchAllUsers() {
         return userRepository.findAll().stream()
@@ -30,6 +35,7 @@ public class UserService {
 
     private UserResponse mapToUserResponse(User user) {
         UserResponse response = new UserResponse();
+        response.setKeyCloakId(user.getKeycloakId());
         response.setId(String.valueOf(user.getId()));
         response.setFirstName(user.getFirstName());
         response.setLastName(user.getLastName());
@@ -55,8 +61,12 @@ public class UserService {
 //        user.setId(nextId++);
 //        usersList.add(user);
 //        return usersList;
+
+        String token = keyCloakAdminService.getAdminAccessToken();
+        String keycloakUserId = keyCloakAdminService.createUser(token, userRequest);
         User user = new User();
         updateUserFromRequest(user, userRequest);
+        user.setKeycloakId(keycloakUserId);
         userRepository.save(user);
     }
 

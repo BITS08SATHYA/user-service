@@ -8,11 +8,13 @@ import lombok.*;
 @AllArgsConstructor
 public class UserRequest {
 
+    private String userName;
     private String firstName;
     private String lastName;
+    private String password;
     private String email;
     private String phone;
-    private UserRole role = UserRole.CUSTOMER;
+//    private UserRole role = UserRole.CUSTOMER;
     private AddressDTO address;
 
 }
