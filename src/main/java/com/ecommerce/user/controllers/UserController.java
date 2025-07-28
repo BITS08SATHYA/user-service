@@ -25,6 +25,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAllUsers() {
+        System.out.println("Request Received");
 //        return new ResponseEntity<>(userService.fetchAllUsers(), HttpStatus.OK);
         return ResponseEntity.ok(userService.fetchAllUsers());
     }
